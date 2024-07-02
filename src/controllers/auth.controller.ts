@@ -2,6 +2,7 @@ import { Get, Controller, Post, Request, Body, HttpCode } from '@nestjs/common';
 import { AllowAnonymous } from '../services/utils/constants';
 import { AuthService } from '../services/auth/auth.service';
 import { User } from '../models/user';
+import { UserDto } from '../models/dtos/user.dto';
 
 @Controller()
 export class AuthController {
@@ -10,7 +11,7 @@ export class AuthController {
   @AllowAnonymous()
   @HttpCode(200)
   @Post('auth/login')
-  async login(@Body() user: User) {
+  async login(@Body() user: UserDto) {
     return this.authService.login(user);
   }
 
