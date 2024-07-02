@@ -1,16 +1,7 @@
-import {
-  Get,
-  Controller,
-  Res,
-  Post,
-  Request,
-  UseGuards,
-  Body,
-  HttpCode,
-} from '@nestjs/common';
-import { Response } from 'express';
+import { Get, Controller, Post, Request, Body, HttpCode } from '@nestjs/common';
 import { AllowAnonymous } from '../services/utils/constants';
 import { AuthService } from '../services/auth/auth.service';
+import { User } from '../models/user';
 
 @Controller()
 export class AuthController {
@@ -19,12 +10,13 @@ export class AuthController {
   @AllowAnonymous()
   @HttpCode(200)
   @Post('auth/login')
-  async login(@Body() user) {
+  async login(@Body() user: User) {
     return this.authService.login(user);
   }
 
+  @HttpCode(200)
   @Get('profile')
-  getProfile(@Request() req) {
+  getProfile(@Request() req): User {
     return req.user;
   }
 }
