@@ -31,23 +31,6 @@ import { JwtService } from '@nestjs/jwt';
 })
 export class AppModule {
   constructor(private userService: UserService, private readonly als: AsyncLocalStorage<any>) {}
-
-  // configure(consumer: MiddlewareConsumer) {
-  //   // bind the middleware,
-  //   consumer
-  //     .apply((req, res, next) => {
-  //       // populate the store with some default values
-  //       // based on the request,
-  //       const store = {
-  //         userId: req.headers['x-user-id'],
-  //       };
-  //       // and pass the "next" function as callback
-  //       // to the "als.run" method together with the store.
-  //       this.als.run(store, () => next());
-  //     })
-  //     // and register it for all routes (in case of Fastify use '(.*)')
-  //     .forRoutes('*');
-  // }
   
   async onModuleInit() {
     await this.userService.seed();
