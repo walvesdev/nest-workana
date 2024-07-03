@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../models/user';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { UserDto } from '../../models/dtos/user.dto';
+import { Model, Schema, Types } from 'mongoose';
 import { Crypt } from '../utils/crypt';
+import { UserFactory } from '../../models/factories/user.factory';
+import { UserDto } from '../../models/dtos/user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {
+  }
 
-  async create(userDto: UserDto): Promise<User> {
+  async create(userDto: any): Promise<User> {
     userDto.senha = await Crypt.Encrypt(userDto.senha);
     const createdCat = new this.userModel(userDto);
     return createdCat.save();
@@ -19,8 +21,12 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  async findOne(id: string): Promise<User | undefined> {
-    return this.userModel.findById(id).exec();
+  async findOne(id: string): Promise<any | undefined> {
+    if (id) {
+      const user = await this.userModel.findById(id).exec();
+      return await UserFactory.MapToUserDto(user, id);
+    }
+    return null;
   }
 
   async findByEmailPassword(user: UserDto): Promise<any | undefined> {
@@ -32,8 +38,10 @@ export class UserService {
       .exec();
   }
 
-  async update(user: UserDto) {
-    return this.userModel.findByIdAndUpdate(user._id, user).exec();
+  async update(user: User) {
+    return this.userModel
+      .findByIdAndUpdate(user._id, user, { new: true })
+      .exec();
   }
 
   async delete(id: string) {
@@ -41,7 +49,8 @@ export class UserService {
   }
 
   async seed() {
-    const user: User = {
+    //@ts-ignore
+    const user: UserDto = {
       email: 'email@email.com',
       nome: 'User Master',
       senha: '123456',
@@ -55,12 +64,12 @@ export class UserService {
       },
     };
 
-    const usersDb = await this.findByEmailPassword(user as UserDto);
+    const usersDb = await this.findByEmailPassword(user);
 
     if (!!usersDb) {
       return;
     }
 
-    await this.create(user as UserDto);
+    await this.create(user);
   }
 }

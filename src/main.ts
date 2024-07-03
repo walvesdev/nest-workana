@@ -1,15 +1,34 @@
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import {
+  NestFastifyApplication,
+  FastifyAdapter,
+} from '@nestjs/platform-fastify';
 import { join } from 'path';
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
+  app.useStaticAssets({
+    root: join(__dirname, '..', 'public'),
+  });
 
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');
+  const hbs = require('handlebars');
+  hbs.registerHelper('toJSON', function (obj) {
+    return JSON.stringify(obj, null, 3);
+  });
 
+  hbs.create();
+
+  app.setViewEngine({
+    engine: {
+      handlebars: hbs,
+    },
+    templates: join(__dirname, '..', 'views'),
+  });
   await app.listen(3000);
 }
+
 bootstrap();

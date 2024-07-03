@@ -3,6 +3,7 @@ import { UserService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../../models/dtos/user.dto';
 import { Crypt } from '../utils/crypt';
+import { User } from '../../models/user';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
     const user = await this.usersService.findByEmailPassword({
       email,
       senha,
-    } as UserDto);
+    } as User);
     if (user && user.senha === (await Crypt.Encrypt(senha))) {
       return user;
     }
@@ -24,7 +25,7 @@ export class AuthService {
 
   async login(user: UserDto) {
     const userValid = await this.validateUser(user.email, user.senha);
-    const payload = { email: userValid?.email, sub: userValid?._id };
+    const payload = { email: userValid?.email, sub: userValid?.id };
     return {
       access_token: this.jwtService.sign(payload),
     };

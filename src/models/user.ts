@@ -6,6 +6,9 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
+  // @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
+  _id: any;
+  
   @Prop({ required: true })
   email: string;
 
@@ -17,6 +20,7 @@ export class User {
 
   @Prop({ required: true })
   endereco: Endereco;
+  
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
