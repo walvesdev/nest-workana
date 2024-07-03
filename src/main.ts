@@ -5,12 +5,14 @@ import {
 } from '@nestjs/platform-fastify';
 import { join } from 'path';
 import { AppModule } from './modules/app.module';
+import { HttpExceptionFilter } from './services/utils/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.useStaticAssets({
     root: join(__dirname, '..', 'public'),
   });

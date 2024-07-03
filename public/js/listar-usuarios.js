@@ -1,28 +1,32 @@
 ﻿const $ = window.jQuery;
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener('DOMContentLoaded', async () => {
   await loadData();
 });
 
-async function loadData(){
-  try {
-    const response = await fetch("http://localhost:3000/usuario");
+async function loadData() {
+  console.log(localStorage.getItem('was_token'))
+  fetch('http://localhost:3000/usuario', {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, 
+    },
+  }).then(async response => {
     if (response.ok) {
       const usuarios = await response.json();
       renderizarUsuarios(usuarios);
     } else {
-      alert("Erro ao buscar usuários.");
+      window.location.href='http://localhost:3000/';
     }
-  } catch (error) {
-    alert("Erro na comunicação com a API:", error);
-  }
+  }).catch(error => window.location.href='http://localhost:3000/');
 }
 
 function renderizarUsuarios(usuarios) {
-  const userList = document.querySelector("#userTable tbody");
+  const userList = document.querySelector('#userTable tbody');
 
-  usuarios.forEach((usuario) => {    
-    
+  usuarios.forEach((usuario) => {
+
     const html = ` <tr>
                               <td>${usuario.nome}</td>
                               <td>${usuario.email}</td>
@@ -31,16 +35,19 @@ function renderizarUsuarios(usuarios) {
                                      <a href="#" onclick="deletar('${usuario._id}')">Excluir</a>
                               </td>
                           </tr>`;
-    userList.insertAdjacentHTML("beforeend", html);
+    userList.insertAdjacentHTML('beforeend', html);
   });
 }
 
 function deletar(id) {
   fetch(`http://localhost:3000/usuario/cadastro/${id}`, {
     method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, // notice the Bearer before your token
+    },
   }).then(async response => {
     alert('Excluído com sucesso!');
-    window.location.href ="http://localhost:3000/usuario/listar";
+    window.location.href = 'http://localhost:3000/usuario/listar';
   })
-    .catch(error => alert('Erro ao excluir usuario!'));
+    .catch(error => window.location.href='http://localhost:3000/');
 }

@@ -32,14 +32,12 @@ export class UserController {
   cadastro(@Res() res) {
     return res.view('cadastro-usuario.hbs');
   }
-
   @AllowAnonymous()
   @Get('cadastro/:id')
   async createEditHbs(@Res() res, @Param('id') id: string) {
     return res.view('editar-usuario.hbs', {id: id});
   }
 
-  @AllowAnonymous()
   @HttpCode(201)
   @Post('cadastro')
   async createHbs(@Response() res, @Body() user: UserDto) {
@@ -54,7 +52,6 @@ export class UserController {
     }
   }
 
-  @AllowAnonymous()
   @HttpCode(204)
   @Put('cadastro/:id')
   async createEdit(@Res() res, @Body() user: UserDto, @Param('id') id: string) {
@@ -79,34 +76,24 @@ export class UserController {
     }
   }
 
-  @AllowAnonymous()
-  @Get('login')
-  login(@Res() res) {
-    return res.view('login.hbs', { message: 'login' });
-  }
-
-  @AllowAnonymous()
   @HttpCode(201)
   @Post()
   async create(@Body() user: User) {
     return this.userService.create(user);
   }
 
-  @AllowAnonymous()
   @HttpCode(200)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<User | undefined> {
     return this.userService.findOne(id);
   }
 
-  @AllowAnonymous()
   @HttpCode(200)
   @Get()
   async findAll(): Promise<User[]> {
     return await this.userService.findAll();
   }
 
-  @AllowAnonymous()
   @HttpCode(204)
   @Put()
   async update(@Body() user: User) {
@@ -120,7 +107,6 @@ export class UserController {
     }
   }
 
-  @AllowAnonymous()
   @HttpCode(204)
   @Delete('cadastro/:id')
   async delete(@Param('id') id: string) {

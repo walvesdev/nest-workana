@@ -23,30 +23,31 @@ formularioEditar.submit(async function(event) {
   fetch(`http://localhost:3000/usuario/cadastro/${dadosUsuario.id}`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, // notice the Bearer before your token
     },
     body: JSON.stringify(dadosUsuario),
   }).then(response => {
     alert('Altereação efetuada com sucesso!');
-    window.location.href ="http://localhost:3000/usuario/listar";
+    window.location.href = 'http://localhost:3000/usuario/listar';
   })
-    .catch(error => alert('Erro ao alterar usuario!'));
+    .catch(error => window.location.href='http://localhost:3000/');
 
 });
 
-function loadData(id){
+function loadData(id) {
   fetch(`http://localhost:3000/usuario/${id}`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-    }
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, // notice the Bearer before your token
+    },
   }).then(async response => {
     let data = await response.json();
 
     setFormData(data);
 
-  })
-    .catch(error => alert('Erro ao obter usuario!'));
+  });
 }
 
 function setFormData(data) {

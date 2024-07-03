@@ -4,10 +4,11 @@ import { AllowAnonymous } from '../services/utils/constants';
 
 @Controller()
 export class AppController {
-  constructor(private userervice: AuthService) {}
+  constructor(private userervice: AuthService) {
+  }
 
   @AllowAnonymous()
-  @Get("/")
+  @Get('/')
   root(@Response() res) {
     return res.view('home.hbs');
   }

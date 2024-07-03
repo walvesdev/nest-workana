@@ -7,11 +7,13 @@ import { LocalStrategy } from '../services/utils/security/strategy/local.strateg
 import { JwtStrategy } from '../services/utils/security/strategy/jwt.strategy';
 import { AuthService } from '../services/auth/auth.service';
 import { AuthController } from '../controllers/auth.controller';
+import { AlsModule } from './als.module';
 
 @Module({
   controllers: [AuthController],
   imports: [
     UsersModule,
+    AlsModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

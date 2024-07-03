@@ -21,13 +21,14 @@ formularioCadastro.submit(async function(event) {
   fetch('http://localhost:3000/usuario/cadastro', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem("was_token")}`, // notice the Bearer before your token
     },
     body: JSON.stringify(dadosUsuario),
   }).then(response =>{
     alert('Cadartro efetuado com sucesso!');
     window.location.href ="http://localhost:3000/usuario/listar";
   } )
-    .catch(error => alert('Erro ao cadastral usuario!'));
+    .catch(error => window.location.href='http://localhost:3000/');
 
 });
