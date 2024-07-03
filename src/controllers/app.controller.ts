@@ -7,7 +7,6 @@ export class AppController {
   constructor(private userervice: AuthService) {
   }
 
-  @AllowAnonymous()
   @Get('/')
   root(@Response() res) {
     return res.view('home.hbs');

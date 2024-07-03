@@ -19,7 +19,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     if (status == 403){
-      response.status(403).redirect('http://localhost:3000/');
+      response.status(403).redirect('http://localhost:3000/login');
     }
   }
 }
