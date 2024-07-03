@@ -28,7 +28,7 @@ formularioEditar.submit(async function(event) {
     body: JSON.stringify(dadosUsuario),
   }).then(response => {
     alert('Altereação efetuada com sucesso!');
-    formularioEditar.trigger('reset');
+    window.location.href ="http://localhost:3000/usuario/listar";
   })
     .catch(error => alert('Erro ao alterar usuario!'));
 
@@ -42,7 +42,6 @@ function loadData(id){
     }
   }).then(async response => {
     let data = await response.json();
-    console.log(data);
 
     setFormData(data);
 

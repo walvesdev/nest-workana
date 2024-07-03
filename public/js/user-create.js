@@ -18,18 +18,16 @@ formularioCadastro.submit(async function(event) {
     },
   };
 
-  console.log(dadosUsuario);
-
   fetch('http://localhost:3000/usuario/cadastro', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(dadosUsuario),
-  }).then(response => alert('Cadartro efetuado com sucesso!'))
-    .catch(error => alert('Erro ao cadastral usuario!'))
-    .finally(async function() {
-      formularioCadastro.trigger('reset');
-    });
+  }).then(response =>{
+    alert('Cadartro efetuado com sucesso!');
+    window.location.href ="http://localhost:3000/usuario/listar";
+  } )
+    .catch(error => alert('Erro ao cadastral usuario!'));
 
 });

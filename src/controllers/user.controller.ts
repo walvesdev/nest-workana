@@ -22,6 +22,12 @@ export class UserController {
   }
 
   @AllowAnonymous()
+  @Get('listar')
+  listar(@Res() res) {
+    return res.view('listar-usuarios.hbs');
+  }
+  
+  @AllowAnonymous()
   @Get('cadastro')
   cadastro(@Res() res) {
     return res.view('cadastro-usuario.hbs');
@@ -116,8 +122,13 @@ export class UserController {
 
   @AllowAnonymous()
   @HttpCode(204)
-  @Delete(':id')
+  @Delete('cadastro/:id')
   async delete(@Param('id') id: string) {
-    return await this.userService.delete(id);
+    if (id && id !== "")
+      return await this.userService.delete(id);
+    else
+      throw new HttpException({
+        message: "Id não encontrado!",
+      }, HttpStatus.BAD_REQUEST);
   }
 }

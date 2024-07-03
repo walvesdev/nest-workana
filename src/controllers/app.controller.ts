@@ -1,15 +1,14 @@
-import { Get, Controller, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Get, Controller, Response } from '@nestjs/common';
 import { AuthService } from '../services/auth/auth.service';
 import { AllowAnonymous } from '../services/utils/constants';
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService) {}
+  constructor(private userervice: AuthService) {}
 
   @AllowAnonymous()
-  @Get()
-  root(@Res() res: Response) {
-    return res.render('index.hbs', { message: '/' });
+  @Get("/")
+  root(@Response() res) {
+    return res.view('home.hbs');
   }
 }
