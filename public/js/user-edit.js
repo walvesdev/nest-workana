@@ -24,23 +24,28 @@ formularioEditar.submit(async function(event) {
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, // notice the Bearer before your token
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, 
     },
     body: JSON.stringify(dadosUsuario),
   }).then(response => {
     alert('Altereação efetuada com sucesso!');
     window.location.href = 'http://localhost:3000/usuario/listar';
-  })
-    .catch(error => window.location.href='http://localhost:3000/');
+  });
 
 });
+function loadApp(){
+  let token = localStorage.getItem('was_token');
+  if (!token) {
+    window.location.href='http://localhost:3000/login';
+  }
+}
 
 function loadData(id) {
   fetch(`http://localhost:3000/usuario/${id}`, {
     method: 'GET',
     headers: {
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, // notice the Bearer before your token
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, 
     },
   }).then(async response => {
     let data = await response.json();

@@ -18,6 +18,7 @@
     if (response.ok) {
       
       response.json().then(data => {
+        localStorage.removeItem("was_token");
         localStorage.setItem("was_token", data.token);
         window.location.href='http://localhost:3000/usuario/listar'
       });
@@ -29,3 +30,7 @@
     window.location.href='http://localhost:3000/';
   }
 });
+
+function loadApp(){
+  localStorage.removeItem('was_token');
+}

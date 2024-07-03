@@ -5,21 +5,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadData() {
-  console.log(localStorage.getItem('was_token'))
   fetch('http://localhost:3000/usuario', {
     method: 'GET',
     headers: {
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, 
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`,
     },
-  }).then(async response => {
-    if (response.ok) {
-      const usuarios = await response.json();
-      renderizarUsuarios(usuarios);
-    } else {
-      window.location.href='http://localhost:3000/';
-    }
-  }).catch(error => window.location.href='http://localhost:3000/');
+  }).then(response => {
+      
+      response.json().then(usuarios => {
+        renderizarUsuarios(usuarios);
+      }).catch(error => console.log(error));
+      
+  });
 }
 
 function renderizarUsuarios(usuarios) {
@@ -43,11 +41,22 @@ function deletar(id) {
   fetch(`http://localhost:3000/usuario/cadastro/${id}`, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('was_token')}`, // notice the Bearer before your token
+      'Authorization': `Bearer ${localStorage.getItem('was_token')}`,
     },
   }).then(async response => {
     alert('Excluído com sucesso!');
     window.location.href = 'http://localhost:3000/usuario/listar';
-  })
-    .catch(error => window.location.href='http://localhost:3000/');
+  });
+}
+
+function loadApp() {
+  let token = localStorage.getItem('was_token');
+  if (!token) {
+    window.location.href = 'http://localhost:3000/login';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('was_token')
+  window.location.href = 'http://localhost:3000/login';
 }

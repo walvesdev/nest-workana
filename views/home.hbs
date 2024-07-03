@@ -8,10 +8,16 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<div class="d-flex justify-content-end">
+  <a class="btn btn-danger rouded mx-5 mt-3" style="border-radius: 100%;" onclick="logout()" href="#">Sair</a>
+</div>
 <div class="content">
   <h1>Home</h1>
   <button type="button" class="btn btn-secondary mt-3" onclick="window.location.href='http://localhost:3000/usuario/listar'">Ir para usuarios</button>
   <script src="/js/home.js"></script>
+  <script>
+    loadApp()
+  </script>
 </div>
 </body>
 </html>

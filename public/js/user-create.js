@@ -22,13 +22,19 @@ formularioCadastro.submit(async function(event) {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem("was_token")}`, // notice the Bearer before your token
+      'Authorization': `Bearer ${localStorage.getItem("was_token")}`, 
     },
     body: JSON.stringify(dadosUsuario),
   }).then(response =>{
     alert('Cadartro efetuado com sucesso!');
     window.location.href ="http://localhost:3000/usuario/listar";
-  } )
-    .catch(error => window.location.href='http://localhost:3000/');
+  } );
 
 });
+
+function loadApp(){
+  let token = localStorage.getItem('was_token');
+  if (!token) {
+    window.location.href='http://localhost:3000/login';
+  }
+}
