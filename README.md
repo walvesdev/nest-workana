@@ -1,6 +1,6 @@
 Intruções
 
-Ao iniciar a aplicação ela vai procurar um banco local
+Ao iniciar a aplicação ela vai procurar um banco local Mongodb
 e criar um banco nessa string de conexão(mongodb://localhost/nest-workana)
 
 vai ser criado um usuario e senha :
